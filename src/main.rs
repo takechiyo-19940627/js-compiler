@@ -16,6 +16,10 @@ pub struct Token {
 pub enum Kind {
     Eof, // end of file
     Plus,
+    Identifier,
+    If,
+    While,
+    For,
 }
 
 struct Lexer<'a> {
@@ -52,8 +56,31 @@ impl<'a> Lexer<'a>  {
     fn offset(&self) -> usize {
         self.source.len() - self.chars.as_str().len()
     }
+
+    fn peek(&self) -> Option<char> {
+        self.chars.clone().next()
+    }
+
+    fn match_keyward(&self, ident: &str) -> Kind {
+        if ident.len() == 1 || ident.len() > 10 {
+            return Kind::Identifier;
+        }
+        match ident {
+            "if" => Kind::If,
+            "while" => Kind::While,
+            "for" => Kind::For,
+            _ => Kind::Identifier,
+        }
+    }
 }
 
 fn main() {
-    println!("Hello, world!");
+    let mut l = Lexer::new("++");
+    println!("offset: {}", l.offset());
+    println!("{:?}", l.read_next_token());
+    println!("{:?}", l.read_next_kind());
+    println!("{:?}", l.peek());
+    println!("{:?}", l.match_keyward("if"));
+    println!("{:?}", l.match_keyward("for"));
+    println!("{:?}", l.match_keyward("while"));
 }
