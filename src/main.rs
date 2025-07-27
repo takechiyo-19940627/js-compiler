@@ -1,6 +1,6 @@
 use std::str::Chars;
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Token {
     /// Token Type
     pub kind: Kind,
@@ -10,6 +10,15 @@ pub struct Token {
 
     /// End offset in source
     pub end: usize,
+
+    pub value: TokenValue,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum TokenValue {
+    None,
+    Number(f64),
+    String(String),
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -17,6 +26,8 @@ pub enum Kind {
     Eof, // end of file
     Plus,
     Identifier,
+    Number,
+    String,
     If,
     While,
     For,
@@ -50,7 +61,7 @@ impl<'a> Lexer<'a>  {
         let start = self.offset();
         let kind = self.read_next_kind();
         let end = self.offset();
-        Token{ kind, start, end }
+        Token{ kind, start, end, value: TokenValue::String("token".to_string()) }
     }
 
     fn offset(&self) -> usize {
