@@ -25,6 +25,7 @@ pub enum TokenValue {
 pub enum Kind {
     Eof, // end of file
     Plus,
+    Minus,
     Identifier,
     Number,
     String,
@@ -49,8 +50,10 @@ impl<'a> Lexer<'a>  {
 
     fn read_next_kind(&mut self) -> Kind {
         while let Some(c) = self.chars.next() {
+            println!("read kind: {}", c);
             match c {
                 '+' => return Kind::Plus,
+                '-' => return Kind::Minus,
                 _ => {}
             }
         }
@@ -86,12 +89,14 @@ impl<'a> Lexer<'a>  {
 }
 
 fn main() {
-    let mut l = Lexer::new("++");
+    let mut l = Lexer::new("+-");
     println!("offset: {}", l.offset());
-    println!("{:?}", l.read_next_token());
     println!("{:?}", l.read_next_kind());
+    println!("{:?}", l.read_next_kind());
+    println!("{:?}", l.read_next_token());
     println!("{:?}", l.peek());
-    println!("{:?}", l.match_keyward("if"));
-    println!("{:?}", l.match_keyward("for"));
-    println!("{:?}", l.match_keyward("while"));
+    // println!("{:?}", l.match_keyward("if"));
+    // println!("{:?}", l.match_keyward("for"));
+    // println!("{:?}", l.match_keyward("while"));
+    // println!("{:?}", l.match_keyward("whilewhilewhilewhile"));
 }
