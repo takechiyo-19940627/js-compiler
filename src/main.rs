@@ -1,6 +1,8 @@
 use core::str;
 use std::str::Chars;
 
+use serde::Serialize;
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct Token {
     /// Token Type
