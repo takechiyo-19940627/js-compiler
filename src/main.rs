@@ -1,5 +1,5 @@
 use core::str;
-use std::{arch::aarch64::int8x16x3_t, str::{self, Chars}, string};
+use std::str::Chars;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Token {
