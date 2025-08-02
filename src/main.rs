@@ -1,4 +1,5 @@
-use std::str::Chars;
+use core::str;
+use std::{arch::aarch64::int8x16x3_t, str::{self, Chars}, string};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Token {
@@ -86,6 +87,54 @@ impl<'a> Lexer<'a>  {
             _ => Kind::Identifier,
         }
     }
+}
+
+#[derive(Debug, Default, Clone, Copy, Serialize, PartialEq, Eq)]
+pub struct Node {
+    /// ソース内の開始オフセット
+    pub start: usize,
+
+    /// ソース内の終了オフセット
+    pub end: usize,
+}
+
+impl Node {
+    pub fn new(start: usize, end: usize) -> Self {
+        Self { start, end }
+    }
+}
+
+pub struct Program {
+    pub node: Node,
+    pub body: Vec<Statement>,
+}
+
+pub enum Statement {
+    VariableDeclarationStatement(VariableDeclaration),
+}
+
+pub struct VariableDeclaration {
+    pub node: Node,
+    pub id: BindingIdentifier,
+    pub init: Option<Expression>,
+}
+
+pub struct BindingIdentifier {
+    pub node: Node,
+    pub name: String,
+}
+
+pub enum Expression {
+}
+
+pub struct AwaitExpression {
+    pub node: Node,
+    pub expression: Box<Expression>,
+}
+
+pub struct YieldExpression {
+    pub node: Node,
+    pub expression: Box<Expression>,
 }
 
 fn main() {
